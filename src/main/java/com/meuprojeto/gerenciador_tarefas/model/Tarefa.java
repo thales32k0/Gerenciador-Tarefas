@@ -21,9 +21,18 @@ public class Tarefa {
 
     private boolean concluida;
 
+    private String prioridade; //add campo prioridade
+
     public Tarefa(String descricao) {
         this.descricao = descricao;
         this.concluida = false;
+        this.prioridade = "média"; //Valor Padrão
+    }
+
+    public Tarefa(String descricao, String prioridade) {
+        this.descricao = descricao;
+        this.concluida = false;
+        this.prioridade = prioridade;
     }
 
 }
