@@ -23,8 +23,13 @@ public class TarefaController {
     }
 
    @GetMapping
-    public ResponseEntity<List<Tarefa>> listarTodas() {
-        List<Tarefa> tarefas = tarefaService.listarTodas();
+    public ResponseEntity<List<Tarefa>> listarTodas(@RequestParam(value = "conluida", required = false) Boolean concluida) {
+        List<Tarefa> tarefas;
+        if (concluida != null){
+            tarefas = tarefaService.listarPorStatusConcluida(concluida);
+        } else {
+            tarefas = tarefaService.listarTodas();
+        }
         return new ResponseEntity<>(tarefas, HttpStatus.OK);
    }
 
