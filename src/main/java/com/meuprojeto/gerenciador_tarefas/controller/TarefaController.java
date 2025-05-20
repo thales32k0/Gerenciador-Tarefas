@@ -64,5 +64,18 @@ public class TarefaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/{id}/concluida")
+    public ResponseEntity<Tarefa> marcarConcluida(@PathVariable Long id) {
+        try {
+            Tarefa tarefa = tarefaService.buscarPorId(id);
+            tarefa.setConcluida(true);
+            Tarefa tarefaAtualizada = tarefaService.atualizar(id, tarefa);
+            return new ResponseEntity<>(tarefaAtualizada, HttpStatus.OK);
+        } catch (jakarta.persistence.EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     }
 
