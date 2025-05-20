@@ -82,12 +82,61 @@
 			"response": []
 		},
 		{
-			"name": "Deletar uma Tarefa",
+			"name": "Deletar Tarefa",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/tarefas/1",
+					"raw": "http://localhost:8080/api/tarefas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tarefas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Testando nova tarefa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\": \"Agendar reunião com a equipe\",\r\n    \"prioridade\": \"alta\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tarefas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tarefas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tarefas/1/concluida",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -96,7 +145,68 @@
 					"path": [
 						"api",
 						"tarefas",
-						"1"
+						"1",
+						"concluida"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Ordenar por Descrição",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tarefas?sort=descricao",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tarefas"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "descricao"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ordenar por Descrição (Descendente)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tarefas?sort=descricao,desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tarefas"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "descricao,desc"
+						}
 					]
 				}
 			},

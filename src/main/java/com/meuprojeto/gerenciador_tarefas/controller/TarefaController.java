@@ -4,6 +4,10 @@ import com.meuprojeto.gerenciador_tarefas.model.Tarefa;
 import com.meuprojeto.gerenciador_tarefas.Service.TarefaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -22,18 +26,37 @@ public class TarefaController {
         this.tarefaService = tarefaService;
     }
 
-   @GetMapping
-    public ResponseEntity<List<Tarefa>> listarTodas(@RequestParam(value = "conluida", required = false) Boolean concluida) {
-        List<Tarefa> tarefas;
-        if (concluida != null){
-            tarefas = tarefaService.listarPorStatusConcluida(concluida);
+    @GetMapping
+    public ResponseEntity<List<Tarefa>> listarTodas(@RequestParam(value = "concluida", required = false) Boolean concluida,
+                                                    @RequestParam(value = "sort", required = false) String sort,
+                                                    @RequestParam(value = "page", defaultValue = "0") int page,
+                                                    @RequestParam(value = "size", defaultValue = "10") int size) {
+        Pageable pageable;
+        if (sort != null) {
+            Sort.Direction direction = Sort.Direction.ASC;
+            String property = sort;
+            if (sort.endsWith(",desc")) {
+                direction = Sort.Direction.DESC;
+                property = sort.substring(0, sort.length() - 5);
+            }
+            Sort ordenacao = Sort.by(direction, property);
+            pageable = PageRequest.of(page, size, ordenacao);
         } else {
-            tarefas = tarefaService.listarTodas();
+            pageable = PageRequest.of(page, size);
         }
-        return new ResponseEntity<>(tarefas, HttpStatus.OK);
-   }
 
-   @GetMapping("/{id}")
+        Page<Tarefa> paginaDeTarefas;
+        if (concluida != null) {
+            paginaDeTarefas = tarefaService.listarPorStatusConcluidaPaginada(concluida, pageable);
+        } else {
+            paginaDeTarefas = tarefaService.listarTodasPaginada(pageable);
+        }
+
+        return new ResponseEntity<>(paginaDeTarefas.getContent(), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/{id}")
     public ResponseEntity<Tarefa> buscarPorId(@PathVariable Long id) {
         try {
             Tarefa tarefa = tarefaService.buscarPorId(id);
