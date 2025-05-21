@@ -3,6 +3,9 @@ package com.meuprojeto.gerenciador_tarefas.controller;
 import com.meuprojeto.gerenciador_tarefas.model.Tarefa;
 import com.meuprojeto.gerenciador_tarefas.Service.TarefaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -16,6 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 
 import java.util.List;
 
@@ -79,7 +85,17 @@ public class TarefaController {
     @Operation(summary = "Cria uma nova tarefa", description = "Cria uma nova tarefa com base nos dados fornecidos.")
     @ApiResponse(responseCode = "201", description = "Tarefa criada com sucesso")
     @PostMapping
-   public ResponseEntity<Tarefa> criar(@Valid @RequestBody Tarefa tarefa) {
+    public ResponseEntity<Tarefa> criar(@Valid @RequestBody(
+            description = "Tarefa a ser criada",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Tarefa.class),
+                    examples = @ExampleObject(
+                            name = "Nova Tarefa",
+                            value = "{\"descricao\": \"Fazer relatório mensal\", \"concluida\": false, \"prioridade\": \"média\"}"
+                    )
+            )
+    ) Tarefa tarefa) {
         Tarefa novaTarefa = tarefaService.criar(tarefa);
         return new ResponseEntity<>(novaTarefa, HttpStatus.CREATED);
     }
@@ -88,7 +104,18 @@ public class TarefaController {
     @ApiResponse(responseCode = "200", description = "Tarefa atualizada com sucesso")
     @ApiResponse(responseCode = "400", description = "Tarefa não encontrada")
     @PutMapping("/{id}")
-    public ResponseEntity<Tarefa> atualizar(@PathVariable Long id, @Valid @RequestBody Tarefa tarefaAtualizada) {
+    public ResponseEntity<Tarefa> atualizar(@Parameter(description = "ID da tarefa a ser atualizada", required = true) @PathVariable Long id,
+                                           @Valid @RequestBody (
+                                                   description = "Dados atualizados da tarefa",
+                                                   content = @Content(
+                                                           mediaType = "aplication/json",
+                                                           schema = @Schema(implementation = Tarefa.class),
+                                                           examples = @ExampleObject(
+                                                                   name = "Tarefa Atualizada",
+                                                                   value = "{\"descricao\": \"Atualizar relatório mensal\", \"concluida\": true, \"prioridade\": \"alta\"}"
+                                                           )
+                                                   )
+                                           ) Tarefa tarefaAtualizada) {
         try {
            Tarefa tarefa = tarefaService.atualizar(id, tarefaAtualizada);
            return new ResponseEntity<>(tarefa, HttpStatus.OK);

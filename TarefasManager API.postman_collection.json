@@ -102,7 +102,7 @@
 			"response": []
 		},
 		{
-			"name": "Testando nova tarefa",
+			"name": "Criar Tarefa com Prioridade",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -131,7 +131,7 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "Tarefa Concluida",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -209,6 +209,109 @@
 						}
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "Nova Tarefa \"baixa\"",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\": \"Tarefa com prioridade baixa\",\r\n    \"prioridade\": \"baixa\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tarefas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tarefas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Nova Tarefa \"média\"",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\": \"Tarefa com prioridade média\",\r\n    \"prioridade\": \"média\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tarefas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tarefas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Nova Tarefa \"alta\"",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\": \"Outra tarefa com prioridade alta\",\r\n    \"prioridade\": \"alta\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tarefas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tarefas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ordenar Por Prioridade (asc)",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Ordenar por Prioridade (desc)",
+			"request": {
+				"method": "GET",
+				"header": []
 			},
 			"response": []
 		}
