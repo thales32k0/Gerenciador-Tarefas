@@ -2,6 +2,9 @@ package com.meuprojeto.gerenciador_tarefas.controller;
 
 import com.meuprojeto.gerenciador_tarefas.model.Tarefa;
 import com.meuprojeto.gerenciador_tarefas.Service.TarefaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,10 +14,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import java.util.List;
 
+@Tag(name = "Tarefas", description = "Gerencia as Tarefas")
 @RestController
 @RequestMapping("/api/tarefas")
 public class TarefaController {
@@ -26,6 +31,9 @@ public class TarefaController {
         this.tarefaService = tarefaService;
     }
 
+    @Operation(summary = "Listar todas as tarefas",
+    description = "Retorna uma lista paginada e opcionalmente filtrada e ordenada de tarefas.")
+    @ApiResponse(responseCode = "200", description = "Lista de tarefas retornada com sucesso")
     @GetMapping
     public ResponseEntity<List<Tarefa>> listarTodas(@RequestParam(value = "concluida", required = false) Boolean concluida,
                                                     @RequestParam(value = "sort", required = false) String sort,
@@ -55,7 +63,9 @@ public class TarefaController {
         return new ResponseEntity<>(paginaDeTarefas.getContent(), HttpStatus.OK);
     }
 
-
+@Operation(summary = "Busca uma tarefa por ID", description = "Retorna uma única tarefa com base no ID fornecido.")
+@ApiResponse(responseCode = "200", description = "Tarefa encontrada com sucesso")
+@ApiResponse(responseCode = "400", description = "Tarefa não encontrada")
     @GetMapping("/{id}")
     public ResponseEntity<Tarefa> buscarPorId(@PathVariable Long id) {
         try {
@@ -66,12 +76,17 @@ public class TarefaController {
         }
     }
 
+    @Operation(summary = "Cria uma nova tarefa", description = "Cria uma nova tarefa com base nos dados fornecidos.")
+    @ApiResponse(responseCode = "201", description = "Tarefa criada com sucesso")
     @PostMapping
    public ResponseEntity<Tarefa> criar(@Valid @RequestBody Tarefa tarefa) {
         Tarefa novaTarefa = tarefaService.criar(tarefa);
         return new ResponseEntity<>(novaTarefa, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Atualiza uma tarefa existente", description = "Atualiza uma tarefa existente com base no ID fornecido.")
+    @ApiResponse(responseCode = "200", description = "Tarefa atualizada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Tarefa não encontrada")
     @PutMapping("/{id}")
     public ResponseEntity<Tarefa> atualizar(@PathVariable Long id, @Valid @RequestBody Tarefa tarefaAtualizada) {
         try {
@@ -82,6 +97,9 @@ public class TarefaController {
         }
     }
 
+    @Operation(summary = "Deleta uma tarefa por ID", description = "Deleta uma tarefa existente com base no ID fornecido.")
+    @ApiResponse(responseCode = "204", description = "Tarefa deletada com sucesso")
+    @ApiResponse(responseCode = "404", description = "Tarefa não encontrada")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         try {
@@ -93,6 +111,9 @@ public class TarefaController {
         }
     }
 
+    @Operation(summary = "Marca uma tarefa como concluída", description = "Altera o status 'concluida' de uma tarefa para true.")
+    @ApiResponse(responseCode = "200", description = "Tarefa atualizada com sucesso")
+    @ApiResponse(responseCode = "404", description = "Tarefa não encontrada")
     @PutMapping("/{id}/concluida")
     public ResponseEntity<Tarefa> marcarConcluida(@PathVariable Long id) {
         try {
