@@ -1,5 +1,6 @@
 package com.meuprojeto.gerenciador_tarefas.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meuprojeto.gerenciador_tarefas.model.Tarefa;
 import com.meuprojeto.gerenciador_tarefas.Service.TarefaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,8 +21,6 @@ import org.springframework.http.HttpStatus;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
-
-
 
 import java.util.List;
 
@@ -109,12 +108,19 @@ public class TarefaController {
                             value = "{\"id\": 3, \"descricao\": \"Agendar reunião\", \"concluida\": false, \"prioridade\": \"média\"}"
                     )
             ))
-    @PostMapping
-    public ResponseEntity<Tarefa> criar(@RequestBody Tarefa tarefa) {
-        System.out.println("Tarefa recebida no controller:");
-        System.out.println("  Descricao: " + tarefa.getDescricao());
-        System.out.println("  Prioridade: " + tarefa.getPrioridade());
-        return ResponseEntity.ok(tarefa);
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<Tarefa> criar(@org.springframework.web.bind.annotation.RequestBody String rawBody) {
+        System.out.println("Corpo da requisição recebido:");
+        System.out.println(rawBody);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Tarefa tarefa = mapper.readValue(rawBody, Tarefa.class);
+            Tarefa novaTarefa = tarefaService.criar(tarefa);
+            return new ResponseEntity<>(novaTarefa, HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Operation(summary = "Atualiza uma tarefa existente", description = "Atualiza os detalhes de uma tarefa com base no ID fornecido.")
@@ -129,17 +135,7 @@ public class TarefaController {
     @ApiResponse(responseCode = "404", description = "Tarefa não encontrada")
     @PutMapping("/{id}")
     public ResponseEntity<Tarefa> atualizar(@Parameter(description = "ID da tarefa a ser atualizada") @PathVariable Long id,
-                                            @Valid @RequestBody(
-                                                    description = "Dados atualizados da tarefa",
-                                                    content = @Content(
-                                                            mediaType = "application/json",
-                                                            schema = @Schema(implementation = Tarefa.class),
-                                                            examples = @ExampleObject(
-                                                                    name = "Exemplo de Atualização",
-                                                                    value = "{\"descricao\": \"Novo texto\", \"concluida\": true, \"prioridade\": \"média\"}"
-                                                            )
-                                                    )
-                                            ) Tarefa tarefaAtualizada) {
+                                            @org.springframework.web.bind.annotation.RequestBody Tarefa tarefaAtualizada) {
         try {
             Tarefa tarefa = tarefaService.atualizar(id, tarefaAtualizada);
             return new ResponseEntity<>(tarefa, HttpStatus.OK);

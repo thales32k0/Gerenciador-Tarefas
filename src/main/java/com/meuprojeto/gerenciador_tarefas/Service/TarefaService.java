@@ -58,10 +58,11 @@ public class TarefaService {
     }
 
     public Page<Tarefa> listarPorStatusConcluidaPaginada(boolean concluida, Pageable pageable) {
-        return (Page<Tarefa>) tarefaRepository.findByConcluida(concluida, pageable);
+        return tarefaRepository.findByConcluida(concluida, pageable);
     }
 
     public List<Tarefa> listarPorStatusConcluida(boolean concluida) {
-        return tarefaRepository.findByConcluida(concluida, Pageable.unpaged());
+        Page<Tarefa> pagina = tarefaRepository.findByConcluida(concluida, Pageable.unpaged());
+        return pagina.getContent();
     }
 }
