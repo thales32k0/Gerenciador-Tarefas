@@ -55,7 +55,7 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull re
     <td><img src="https://avatars.githubusercontent.com/u/89024257?v=4" width="100"/></td>
     <td>
       <b>Thales Eduardo</b><br/>
-      Aprendiz de tecnologia focado em Java ☕<br/>
+      Entusiasta de tecnologia focado em Java ☕<br/>
       <a href="https://github.com/thales32k0">GitHub</a>
     </td>
   </tr>
