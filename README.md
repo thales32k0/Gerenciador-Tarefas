@@ -3,6 +3,10 @@
 [![Java](https://img.shields.io/badge/Java-8-orange.svg)](https://www.java.com/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.x-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Swagger](https://img.shields.io/badge/Swagger-3.0-blue.svg)](https://swagger.io/)
+[![H2 Database](https://img.shields.io/badge/H2%20Database-In--Memory-blue.svg?logo=h2&logoColor=white)](http://www.h2database.com/html/main.html)
+[![Maven Central](https://img.shields.io/maven-central/v/org.springframework.boot/spring-boot-starter-web.svg?label=Spring%20Web)](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web)
+[![Maven Central](https://img.shields.io/maven-central/v/org.springframework.boot/spring-boot-starter-data-jpa.svg?label=Spring%20Data%20JPA)](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Uma API simples para gerenciar tarefas.
 
@@ -40,3 +44,23 @@ Uma API simples para gerenciar tarefas.
 * Adicionar timestamps de criação e atualização.(será implementado)
 * Implementar categorias/tags para tarefas.(será implementado)
 * Reativar a validação dos dados da tarefa.(será implementado)
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
+
+## 👨‍💻 Autor
+<table>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/89024257?v=4" width="100"/></td>
+    <td>
+      <b>Thales Eduardo</b><br/>
+      Aprendiz de tecnologia focado em Java ☕<br/>
+      <a href="https://github.com/thales32k0">GitHub</a>
+    </td>
+  </tr>
+</table>
+
+## Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
