@@ -25,6 +25,7 @@ Uma API simples para gerenciar tarefas.
 * Ordenação de tarefas por descrição e prioridade (ascendente e descendente) usando o parâmetro `sort` (ex: `/api/tarefas?sort=descricao`, `/api/tarefas?sort=prioridade,desc`)
 * Paginação da lista de tarefas usando os parâmetros `page` e `size` (ex: `/api/tarefas?page=0&size=10`)
 * Documentação interativa da API com Swagger (OpenAPI) disponível em [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+* Filtragem de tarefas por prioridade (`/api/tarefas?prioridade=baixa`, `média`, `alta`)
 
 ## Como executar:
 
@@ -38,12 +39,19 @@ Uma API simples para gerenciar tarefas.
 
 ## Endpoints da API:
 
-* `GET /api/tarefas`: Lista todas as tarefas (com suporte a filtragem por `concluida`, ordenação por `sort` e paginação por `page` e `size`).
+* `GET /api/tarefas`: Lista todas as tarefas (com suporte a filtragem por `concluida` e `prioridade`, ordenação por `sort` e paginação por `page` e `size`).
 * `GET /api/tarefas/{id}`: Busca uma tarefa por ID.
 * `POST /api/tarefas`: Cria uma nova tarefa (requer um corpo JSON com `descricao` e `prioridade`).
 * `PUT /api/tarefas/{id}`: Atualiza uma tarefa existente (requer um corpo JSON com os campos a serem atualizados: `descricao`, `concluida`, `prioridade`).
 * `DELETE /api/tarefas/{id}`: Deleta uma tarefa por ID.
 * `PUT /api/tarefas/{id}/concluida`: Marca uma tarefa como concluída.
+
+## Exemplos de uso do GET /api/tarefas:
+- Listar todas as tarefas: `/api/tarefas`
+- Filtrar tarefas concluídas: `/api/tarefas?concluida=true`
+- Filtrar tarefas com prioridade alta: `/api/tarefas?prioridade=alta`
+- Ordenar por descrição (ascendente): `/api/tarefas?sort=descricao`
+- Listar a segunda página (tamanho 10): `/api/tarefas?page=1&size=10`
 
 ## Próximos Passos (Opcional):
 

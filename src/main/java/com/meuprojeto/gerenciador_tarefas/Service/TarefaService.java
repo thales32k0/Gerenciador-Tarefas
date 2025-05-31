@@ -65,4 +65,9 @@ public class TarefaService {
         Page<Tarefa> pagina = tarefaRepository.findByConcluida(concluida, Pageable.unpaged());
         return pagina.getContent();
     }
+    public Page<Tarefa> listarPorPrioridadePaginada(String prioridade, Pageable pageable) {
+        return tarefaRepository.findByPrioridade(prioridade, pageable);
+    }
 }
+
+

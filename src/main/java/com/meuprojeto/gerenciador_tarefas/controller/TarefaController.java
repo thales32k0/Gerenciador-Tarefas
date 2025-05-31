@@ -3,6 +3,7 @@ package com.meuprojeto.gerenciador_tarefas.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meuprojeto.gerenciador_tarefas.model.Tarefa;
 import com.meuprojeto.gerenciador_tarefas.Service.TarefaService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -46,15 +47,19 @@ public class TarefaController {
                     )
             ))
     @GetMapping
-    public ResponseEntity<List<Tarefa>> listarTodas(@Parameter(description = "Filtrar tarefas por status de conclusão (true/false)")
-                                                    @RequestParam(value = "concluida", required = false) Boolean concluida,
-                                                    @Parameter(description = "Ordenar por um campo (ex: descricao, prioridade). Adicione ',desc' para ordem descendente.")
-                                                    @RequestParam(value = "sort", required = false) String sort,
-                                                    @Parameter(description = "Número da página a ser retornada (padrão: 0)")
-                                                    @RequestParam(value = "page", defaultValue = "0") int page,
-                                                    @Parameter(description = "Número de itens por página (padrão: 10)")
-                                                    @RequestParam(value = "size", defaultValue = "10") int size) {
+    public ResponseEntity<List<Tarefa>> listarTodas(
+            @Parameter(description = "Filtrar tarefas por status de conclusão (true/false)")
+            @RequestParam(value = "concluida", required = false) Boolean concluida,
+            @Parameter(description = "Filtrar tarefas por prioridade (baixa, média, alta)")
+            @RequestParam(value = "prioridade", required = false) String prioridade,
+            @Parameter(description = "Ordenar por um campo (ex: descricao, prioridade). Adicione ',desc' para ordem descendente.")
+            @RequestParam(value = "sort", required = false) String sort,
+            @Parameter(description = "Número da página a ser retornada (padrão: 0)")
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @Parameter(description = "Número de itens por página (padrão: 10)")
+            @RequestParam(value = "size", defaultValue = "10") int size) {
         Pageable pageable;
+        Sort ordenacao = Sort.unsorted();
         if (sort != null) {
             Sort.Direction direction = Sort.Direction.ASC;
             String property = sort;
@@ -62,15 +67,15 @@ public class TarefaController {
                 direction = Sort.Direction.DESC;
                 property = sort.substring(0, sort.length() - 5);
             }
-            Sort ordenacao = Sort.by(direction, property);
-            pageable = PageRequest.of(page, size, ordenacao);
-        } else {
-            pageable = PageRequest.of(page, size);
+            ordenacao = Sort.by(direction, property);
         }
+        pageable = PageRequest.of(page, size, ordenacao);
 
         Page<Tarefa> paginaDeTarefas;
         if (concluida != null) {
             paginaDeTarefas = tarefaService.listarPorStatusConcluidaPaginada(concluida, pageable);
+        } else if (prioridade != null) {
+            paginaDeTarefas = tarefaService.listarPorPrioridadePaginada(prioridade, pageable);
         } else {
             paginaDeTarefas = tarefaService.listarTodasPaginada(pageable);
         }
@@ -178,7 +183,7 @@ public class TarefaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+@Hidden
     @PostMapping("/teste")
     public ResponseEntity<Tarefa> testeRecebimento(@RequestBody Tarefa tarefa) {
         System.out.println("Tarefa recebida no /teste:");

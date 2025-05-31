@@ -58,7 +58,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"descricao\": \"Fazer compras URGENTE no supermercado\",\r\n    \"concluida\": true\r\n}",
+					"raw": "{\r\n    \"descricao\": \"Fazer compras URGENTE no supermercado\",\r\n    \"concluida\": true\r\n    \"prioridade\": \"alta\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -135,6 +135,15 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"descricao\": \"Tarefa importante\",\r\n  \"prioridade\": \"alta\",\r\n  \"concluida\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://localhost:8080/api/tarefas/1/concluida",
 					"protocol": "http",

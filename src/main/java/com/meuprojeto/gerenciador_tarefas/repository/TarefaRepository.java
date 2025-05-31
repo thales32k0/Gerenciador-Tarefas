@@ -12,5 +12,7 @@ import java.util.List;
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     Page<Tarefa> findByConcluida(boolean concluida, Pageable pageable);
     Page<Tarefa> findAll(Pageable pageable); //Novo método para ordenação
+    Page<Tarefa> findByPrioridade(String prioridade, Pageable pageable);
+
 
 }
