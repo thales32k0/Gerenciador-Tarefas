@@ -10,6 +10,13 @@
 
 Uma API simples para gerenciar tarefas.
 
+## Tecnologias Utilizadas:
+* **Spring Web:** Para construção da API REST.
+* **Spring Data JPA:** Para persistência de dados utilizando o padrão JPA.
+* **H2 Database:** Banco de dados em memória para desenvolvimento e testes.
+* **Swagger (OpenAPI):** Para documentação interativa da API.
+
+
 ## Funcionalidades Implementadas:
 
 * CRUD básico para tarefas (Criar, Ler, Atualizar, Deletar)
