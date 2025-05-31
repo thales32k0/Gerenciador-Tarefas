@@ -54,13 +54,6 @@ Uma API simples para gerenciar tarefas.
 - Ordenar por descrição (ascendente): `/api/tarefas?sort=descricao`
 - Listar a segunda página (tamanho 10): `/api/tarefas?page=1&size=10`
 
-## Próximos Passos (Opcional):
-
-* Implementar filtragem por prioridade.(será implementado)
-* Adicionar timestamps de criação e atualização.(será implementado)
-* Implementar categorias/tags para tarefas.(será implementado)
-* Reativar a validação dos dados da tarefa.(será implementado)
-
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
