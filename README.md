@@ -21,11 +21,12 @@ Uma API simples para gerenciar tarefas.
 
 * CRUD básico para tarefas (Criar, Ler, Atualizar, Deletar)
 * Marcação de tarefa como concluída
-* Filtragem de tarefas por status de conclusão (`/api/tarefas?concluida=true` ou `/api/tarefas?concluida=false`)
-* Ordenação de tarefas por descrição e prioridade (ascendente e descendente) usando o parâmetro `sort` (ex: `/api/tarefas?sort=descricao`, `/api/tarefas?sort=prioridade,desc`)
-* Paginação da lista de tarefas usando os parâmetros `page` e `size` (ex: `/api/tarefas?page=0&size=10`)
-* Documentação interativa da API com Swagger (OpenAPI) disponível em [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+* Filtragem por status de conclusão (`/api/tarefas?concluida=true` ou `/api/tarefas?concluida=false`)
 * Filtragem de tarefas por prioridade (`/api/tarefas?prioridade=baixa`, `média`, `alta`)
+* Ordenação por descrição e prioridade (usando o parâmetro `sort`)
+* Paginação da lista de tarefas (usando os parâmetros `page` e `size`)
+* **Segurança:** Autenticação básica HTTP usando credenciais armazenadas em banco de dados.
+* Documentação interativa da API com Swagger (OpenAPI) disponível em [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ## Como executar:
 
