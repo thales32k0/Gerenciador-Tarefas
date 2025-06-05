@@ -16,12 +16,30 @@
 		},
 		{
 			"name": "Criar uma Nova Tarefa",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "senha",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "usuario",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"descricao\": \"Fazer compras no supermercado\"\r\n}",
+					"raw": "{\r\n    \"descricao\": \"Outra tarefa\",\r\n    \"prioridade\": \"alta\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -318,6 +336,30 @@
 		},
 		{
 			"name": "Ordenar por Prioridade (desc)",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Data Específica",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Antes de Data Específica",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Entre duas Datas",
 			"request": {
 				"method": "GET",
 				"header": []

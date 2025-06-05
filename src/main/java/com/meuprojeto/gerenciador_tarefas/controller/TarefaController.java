@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
+import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -52,35 +54,50 @@ public class TarefaController {
             @RequestParam(value = "concluida", required = false) Boolean concluida,
             @Parameter(description = "Filtrar tarefas por prioridade (baixa, média, alta)")
             @RequestParam(value = "prioridade", required = false) String prioridade,
-            @Parameter(description = "Ordenar por um campo (ex: descricao, prioridade). Adicione ',desc' para ordem descendente.")
+            @Parameter(description = "Filtrar tarefas criadas a partir desta data (formato: yyyy-MM-ddTHH:mm:ss)")
+            @RequestParam(value = "createdAtAfter", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAtAfter,
+            @Parameter(description = "Filtrar tarefas criadas até esta data (formato: yyyy-MM-ddTHH:mm:ss)")
+            @RequestParam(value = "createdAtBefore", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAtBefore,
+            @Parameter(description = "Filtrar tarefas atualizadas a partir desta data (formato: yyyy-MM-ddTHH:mm:ss)")
+            @RequestParam(value = "updatedAtAfter", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime updatedAtAfter,
+            @Parameter(description = "Filtrar tarefas atualizadas até esta data (formato: yyyy-MM-ddTHH:mm:ss)")
+            @RequestParam(value = "updatedAtBefore", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime updatedAtBefore,
+            @Parameter(description = "Ordenar por um campo (ex: descricao, prioridade, createdAt). Adicione ',desc' para ordem descendente.")
             @RequestParam(value = "sort", required = false) String sort,
             @Parameter(description = "Número da página a ser retornada (padrão: 0)")
             @RequestParam(value = "page", defaultValue = "0") int page,
             @Parameter(description = "Número de itens por página (padrão: 10)")
             @RequestParam(value = "size", defaultValue = "10") int size) {
-        Pageable pageable;
+
+        Pageable pageable = buildPageable(sort, page, size); // Reutilizamos seu método buildPageable
+
+        // Chamar um novo método de serviço que lida com todos os filtros
+        Page<Tarefa> paginaDeTarefas = tarefaService.listarTarefasComFiltros(
+                concluida, prioridade, createdAtAfter, createdAtBefore, updatedAtAfter, updatedAtBefore, pageable);
+
+        return new ResponseEntity<>(paginaDeTarefas.getContent(), HttpStatus.OK);
+    }
+
+    // Seu método buildPageable atualizado para incluir ordenação explícita de asc/desc
+    private Pageable buildPageable(String sort, int page, int size) {
         Sort ordenacao = Sort.unsorted();
-        if (sort != null) {
+        if (sort != null && !sort.trim().isEmpty()) {
             Sort.Direction direction = Sort.Direction.ASC;
             String property = sort;
             if (sort.endsWith(",desc")) {
                 direction = Sort.Direction.DESC;
                 property = sort.substring(0, sort.length() - 5);
+            } else if (sort.endsWith(",asc")) {
+                direction = Sort.Direction.ASC;
+                property = sort.substring(0, sort.length() - 4);
             }
             ordenacao = Sort.by(direction, property);
         }
-        pageable = PageRequest.of(page, size, ordenacao);
-
-        Page<Tarefa> paginaDeTarefas;
-        if (concluida != null) {
-            paginaDeTarefas = tarefaService.listarPorStatusConcluidaPaginada(concluida, pageable);
-        } else if (prioridade != null) {
-            paginaDeTarefas = tarefaService.listarPorPrioridadePaginada(prioridade, pageable);
-        } else {
-            paginaDeTarefas = tarefaService.listarTodasPaginada(pageable);
-        }
-
-        return new ResponseEntity<>(paginaDeTarefas.getContent(), HttpStatus.OK);
+        return PageRequest.of(page, size, ordenacao);
     }
 
     @Operation(summary = "Busca uma tarefa por ID", description = "Retorna uma única tarefa com base no ID fornecido.")

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.domain.Specification;
+import java.time.LocalDateTime;
 
 import java.util.List;
 
@@ -68,6 +70,39 @@ public class TarefaService {
     public Page<Tarefa> listarPorPrioridadePaginada(String prioridade, Pageable pageable) {
         return tarefaRepository.findByPrioridade(prioridade, pageable);
     }
+    public Page<Tarefa> listarTarefasComFiltros(
+            Boolean concluida,
+            String prioridade,
+            LocalDateTime createdAtAfter,
+            LocalDateTime createdAtBefore,
+            LocalDateTime updatedAtAfter,
+            LocalDateTime updatedAtBefore,
+            Pageable pageable) {
+
+        Specification<Tarefa> spec = Specification.where(null); // Começa com uma especificação vazia
+
+        if (concluida != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("concluida"), concluida));
+        }
+        if (prioridade != null && !prioridade.trim().isEmpty()) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("prioridade"), prioridade));
+        }
+        if (createdAtAfter != null) {
+            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("createdAt"), createdAtAfter));
+        }
+        if (createdAtBefore != null) {
+            spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("createdAt"), createdAtBefore));
+        }
+        if (updatedAtAfter != null) {
+            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("updatedAt"), updatedAtAfter));
+        }
+        if (updatedAtBefore != null) {
+            spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("updatedAt"), updatedAtBefore));
+        }
+
+        return tarefaRepository.findAll(spec, pageable);
+    }
+
 }
 
 

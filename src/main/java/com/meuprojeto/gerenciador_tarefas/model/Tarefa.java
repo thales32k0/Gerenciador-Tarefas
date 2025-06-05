@@ -1,9 +1,13 @@
 package com.meuprojeto.gerenciador_tarefas.model;
 
-
 import jakarta.persistence.*;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
+import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "tarefas")
 public class Tarefa {
@@ -22,6 +26,7 @@ public class Tarefa {
     @Schema(description = "Nível de prioridade da tarefa (baixa, média, alta)")
     private String prioridade;
 
+
     public Tarefa() {
     }
 
@@ -30,35 +35,40 @@ public class Tarefa {
         this.prioridade = prioridade;
     }
 
-    public Long getId() {
-        return id;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+
+    // Getters e setters corrigidos para as novas datas
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt; // CORRIGIDO: de updateAt para updatedAt
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt; // CORRIGIDO: de updateAt para updatedAt
     }
 
-    public boolean isConcluida() {
-        return concluida;
+
+    // Métodos de callback para preencher as datas automaticamente
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now(); // CORRIGIDO: de updateAt para updatedAt
     }
 
-    public void setConcluida(boolean concluida) {
-        this.concluida = concluida;
-    }
-
-    public String getPrioridade() {
-        return prioridade;
-    }
-
-    public void setPrioridade(String prioridade) {
-        this.prioridade = prioridade;
+    @PreUpdate
+    protected void onUpdate() { // CORRIGIDO: de onUpadate para onUpdate
+        updatedAt = LocalDateTime.now(); // CORRIGIDO: de updateAt para updatedAt
     }
 }
