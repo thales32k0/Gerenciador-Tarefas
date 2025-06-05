@@ -35,29 +35,13 @@ public class Tarefa {
         this.prioridade = prioridade;
     }
 
+    // Getters e setters corrigidos para as novas datas
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    // CORRIGIDO: de updateAt para updatedAt
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-
-    // Getters e setters corrigidos para as novas datas
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt; // CORRIGIDO: de updateAt para updatedAt
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt; // CORRIGIDO: de updateAt para updatedAt
-    }
 
 
     // Métodos de callback para preencher as datas automaticamente
